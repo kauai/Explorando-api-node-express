@@ -3,8 +3,8 @@ const http = require('http')
 const debug = require('debug')('nodestr:server')
 
 const port = normalizePort(process.env.PORT || 3000)
-app.set('port', port);
 
+app.set('port', port);
 
 const server = http.createServer(app)
 
@@ -12,27 +12,14 @@ server.listen(port, () => {
     console.log('Servidor rodando na porta' + ` http://localhost:3000`)
 })
 
+
 server.on('error', onError)
 server.on('listening', onListening)
 
 
-function normalizePort(val) {
-    const port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-        return val;
-    }
-
-    if (port >= 0) {
-        return port;
-    }
-    return false;
-}
-
 function onError(error) {
-    if (error.syscall !== 'listen') {
-        throw error;
-    }
+    if (error.syscall !== 'listen') throw error
+
     const bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
@@ -50,6 +37,21 @@ function onError(error) {
             throw error;
     }
 }
+
+
+function normalizePort(val) {
+    const port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        return val;
+    }
+
+    if (port >= 0) {
+        return port;
+    }
+    return false;
+}
+
 
 function onListening() {
     const addr = server.address()
