@@ -42,6 +42,21 @@ module.exports = {
             })
     },
 
+    getByTag: (req, res, next) => {
+        Product.find({
+               tags:req.params.tag,
+               active:true
+            },'title description price slug tags')
+            .then(data => {
+                res.status(200).send(data)
+            })
+            .catch(error => {
+                res.status(400).send({
+                    message: 'Falha ao ler produtos: ' + error
+                })
+            })
+    },
+
 
     post: (req, res, next) => {
         let product = new Product(req.body)
