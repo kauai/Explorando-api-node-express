@@ -14,6 +14,21 @@ module.exports = {
             })
     },
 
+    getBySlug: (req, res, next) => {
+        Product.find({
+                 slug:req.params.slug,
+                 active: true
+            }, 'title description price slug tags')
+            .then(data => {
+                res.status(200).send(data)
+            })
+            .catch(error => {
+                res.status(400).send({
+                    message: 'Falha ao ler produtos: ' + error
+                })
+            })
+    },
+
     post: (req, res, next) => {
         let product = new Product(req.body)
         product.save().then(item => {
