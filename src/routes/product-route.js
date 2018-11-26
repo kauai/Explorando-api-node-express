@@ -7,6 +7,7 @@ router.use((req, res, next) => {
     next();
 })
 
+router.get('/',controller.get)
 router.post('/', controller.post)
 router.put('/:id', controller.put)
 router.delete('/', controller.deleta)
