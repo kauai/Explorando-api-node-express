@@ -66,9 +66,21 @@ module.exports = {
             res.status(400).send({ message: 'Falha ao cadastrar um produto' + error })
         })
     },
-
-    put: ({ params: id, body }, res, next) => {
-        res.status(200).send({ id, body })
+    
+    put: (req , res, next) => {
+        Product.findByIdAndUpdate(req.params.id,
+        {
+           $set:{
+                title:req.body.title,
+                description:req.body.description,
+                slug:req.body.slug,
+                price:req.body.price
+           }
+        }).then(item => {
+            res.status(200).send({ message: 'Produto atualizado com sucesso' })
+        }).catch(error => {
+            res.status(400).send({ message: 'Falha ao atualizar um produto' + error })
+        })
     },
 
     deleta: (req, res, next) => {
