@@ -16,9 +16,9 @@ module.exports = {
 
     getBySlug: (req, res, next) => {
         Product.findOne({
-                 slug:req.params.slug,
-                 active: true
-            }, 'title description price slug tags')
+            slug: req.params.slug,
+            active: true
+        }, 'title description price slug tags')
             .then(data => {
                 res.status(200).send(data)
             })
@@ -44,9 +44,9 @@ module.exports = {
 
     getByTag: (req, res, next) => {
         Product.find({
-               tags:req.params.tag,
-               active:true
-            },'title description price slug tags')
+            tags: req.params.tag,
+            active: true
+        }, 'title description price slug tags')
             .then(data => {
                 res.status(200).send(data)
             })
@@ -66,25 +66,30 @@ module.exports = {
             res.status(400).send({ message: 'Falha ao cadastrar um produto' + error })
         })
     },
-    
-    put: (req , res, next) => {
+
+    put: (req, res, next) => {
         Product.findByIdAndUpdate(req.params.id,
-        {
-           $set:{
-                title:req.body.title,
-                description:req.body.description,
-                slug:req.body.slug,
-                price:req.body.price
-           }
-        }).then(item => {
-            res.status(200).send({ message: 'Produto atualizado com sucesso' })
-        }).catch(error => {
-            res.status(400).send({ message: 'Falha ao atualizar um produto' + error })
-        })
+            {
+                $set: {
+                    title: req.body.title,
+                    description: req.body.description,
+                    slug: req.body.slug,
+                    price: req.body.price
+                }
+            }).then(item => {
+                res.status(200).send({ message: 'Produto atualizado com sucesso' })
+            }).catch(error => {
+                res.status(400).send({ message: 'Falha ao atualizar um produto' + error })
+            })
     },
 
     deleta: (req, res, next) => {
-        res.status(200).send(req.body)
+        Product.findOneAndRemove(req.params.id)
+            .then(item => {
+                res.status(200).send({ message: 'Produto removido com sucesso' })
+            }).catch(error => {
+                res.status(400).send({ message: 'Falha ao remover produto' + error })
+            })
     }
 }
 
