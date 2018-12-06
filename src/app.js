@@ -8,6 +8,7 @@ mongoose.connect('mongodb://kauai:kauai2012@ds011913.mlab.com:11913/dbmongo',{
       useNewUrlParser:true
 })
 
+//parando na aula 23
 
 app.use(express.json())
 app.use('/',indexRoute)
