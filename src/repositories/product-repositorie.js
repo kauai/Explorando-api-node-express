@@ -1,11 +1,12 @@
 'use strict';
+
 const mongoose = require('mongoose');
 const Product = mongoose.model('Product');
 
 exports.get = async() => {
     const res = await Product.find({
         active: true
-    }, 'title price slug');
+    }, 'title price slug tags');
     return res;
 }
 
@@ -15,6 +16,7 @@ exports.getBySlug = async(slug) => {
             slug: slug,
             active: true
         }, 'title description price slug tags');
+        console.log('SLUG',res)
     return res;
 }
 

@@ -18,7 +18,7 @@ module.exports = {
 
     getBySlug: async (req, res, next) => {
            try {
-                const data = repository.getBySlug(req.params.slug)
+                const data = await repository.getBySlug(req.params.slug)
                 res.status(200).send(data)
            } catch (error) {
                 res.status(400).send({
@@ -41,7 +41,7 @@ module.exports = {
 
     getByTag:async (req, res, next) => {
             try {
-                const data = repository.getByTag(req.params.tag)
+                const data = await repository.getByTag(req.params.tag)
                 res.status(200).send(data)
             } catch (error) {
                 res.status(400).send({
