@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+
+const customer = require('./models/customer')
+
 const router = require('./routes/product-route')
 const indexRoute = require('./routes/index-route')
 
