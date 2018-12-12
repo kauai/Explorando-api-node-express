@@ -5,60 +5,53 @@ const repository = require('../repositories/product-repositorie')
 
 module.exports = {
 
-    get: (req, res, next) => {
-            repository.get()
-            .then(data => {
-                res.status(200).send(data)
+    get: async (req, res, next) => {
+        try{
+            const data = await repository.get()
+            res.status(200).send(data)
+        }catch(error){
+            res.status(500).send({
+                message: 'Falha ao ler produtos: ' + error
             })
-            .catch(error => {
+        }
+    },
+
+    getBySlug: async (req, res, next) => {
+           try {
+                const data = repository.getBySlug(req.params.slug)
+                res.status(200).send(data)
+           } catch (error) {
                 res.status(400).send({
                     message: 'Falha ao ler produtos: ' + error
                 })
-            })
+           }
     },
 
-    getBySlug: (req, res, next) => {
-            repository
-            .getBySlug(req.params.slug)
-            .then(data => {
+
+    getById:async (req, res, next) => {
+            try {
+                const data =await repository.getById(req.params.id)
                 res.status(200).send(data)
-            })
-            .catch(error => {
+            } catch (error) {
                 res.status(400).send({
                     message: 'Falha ao ler produtos: ' + error
                 })
-            })
+            }
     },
 
-
-    getById: (req, res, next) => {
-            repository
-            .getById(req.params.id)
-            .then(data => {
+    getByTag:async (req, res, next) => {
+            try {
+                const data = repository.getByTag(req.params.tag)
                 res.status(200).send(data)
-            })
-            .catch(error => {
+            } catch (error) {
                 res.status(400).send({
                     message: 'Falha ao ler produtos: ' + error
                 })
-            })
-    },
-
-    getByTag: (req, res, next) => {
-            repository
-            .getByTag(req.params.tag)
-            .then(data => {
-                res.status(200).send(data)
-            })
-            .catch(error => {
-                res.status(400).send({
-                    message: 'Falha ao ler produtos: ' + error
-                })
-            })
+            }
     },
 
 
-    post: (req, res, next) => {
+    post: async (req, res, next) => {
         let contract = new validationContract()
         contract.hasMinLen(req.body.title,3,'O titulo é obrigatorio 3 caracteres')
         contract.hasMinLen(req.body.slug,3,'O slug é obrigatorio 3 caracteres')
@@ -70,32 +63,34 @@ module.exports = {
            return;
         }
 
-        repository.create(req.body)
-        .then(item => {
+        
+        try {
+            const data = await repository.create(req.body)
             res.status(201).send({ message: 'Produto cadastrado com sucesso' })
-        }).catch(error => {
+        } catch (error) {
             res.status(400).send({ message: 'Falha ao cadastrar um produto' + error })
-        })
+        }
     },
 
-    put: (req, res, next) => {
-         repository
-        .update(req.params.id,req.body)
-        .then(item => {
-                res.status(200).send({ message: 'Produto atualizado com sucesso' })
-            }).catch(error => {
-                res.status(400).send({ message: 'Falha ao atualizar um produto' + error })
-            })
+    put: async (req, res, next) => {
+         try {
+            const data = repository.update(req.params.id,req.body)
+            res.status(200).send({ message: 'Produto atualizado com sucesso' })
+         } catch (error) {
+            res.status(400).send({ message: 'Falha ao atualizar um produto' + error })
+         }
     },
 
-    deleta: (req, res, next) => {
-            repository
-            .delete(req.params.id)
-            .then(item => {
-                res.status(200).send({ message: 'Produto removido com sucesso' })
-            }).catch(error => {
+    deleta:async (req, res, next) => {
+        console.log(req.params.id)
+            try {
+               const result = await repository.getById(req.params.id)
+               const data = await repository.delete(req.params.id)
+               res.status(200).send({ message: 'Produto removido com sucesso',result})
+                //res.status(200).send({ message: 'Testando',id:req.params.id})
+            } catch (error) {
                 res.status(400).send({ message: 'Falha ao remover produto' + error })
-            })
+            }
     }
 }
 
